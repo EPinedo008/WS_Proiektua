@@ -45,18 +45,18 @@ let setupRows = function (game) {
     
     let check = function (theKey, theValue) {
             // YOUR CODE HERE
-        console.log(theKey)
+        
 
         if(theKey == 'birthdate'){
             let solAge = getAge(game.solution[theKey])
             let bereAge= getAge(theValue)
             if(solAge > bereAge){
-             return lower
+             return higher
 
              
             }
             else if(solAge < bereAge){
-             return higher
+             return lower
 
             }
             else 'correct'

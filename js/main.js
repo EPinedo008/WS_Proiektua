@@ -22,7 +22,7 @@ window.onload = function () {
   document.getElementById("gamenumber").innerText = difference_In_Days.toString();
   document.getElementById("back-icon").innerHTML = folder + leftArrow;
 
-  console.log("asdfasdf")
+  
   const input = document.getElementById("myInput");
  
   
@@ -83,7 +83,7 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
          const id = input.value.trim();
          
          addRow(id)
-        input.text = "";
+         input.value = "";
     
   }
 });

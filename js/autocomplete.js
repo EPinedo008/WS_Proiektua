@@ -30,11 +30,11 @@ function autocomplete(inp, game) {
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
        
-        console.log(val)
+      
         for (i = 0; i < players.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
             if (players[i].name.toLowerCase().startsWith(val.toLowerCase())) {
-                console.log(players[i].name.toLowerCase()   )
+                
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
