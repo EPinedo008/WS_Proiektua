@@ -28,8 +28,8 @@ let setupRows = function (game) {
         // YOUR CODE HERE
         const gaur= new Date();
         let data= dateString.split('-');
-        let urtea = gaur.getFullYear - data[0];
-        
+        let urtea = gaur.getFullYear() - data[0];
+
         if (gaur.getMonth < data[1]){
             urtea -= 1;
         }
@@ -43,15 +43,17 @@ let setupRows = function (game) {
     
     let check = function (theKey, theValue) {
             // YOUR CODE HERE
-        
-        if(theKey = 'birthdate'){
-            let solAge = getAge(game.solution.theKey)
+        console.log(theKey)
+
+        if(theKey == 'birthdate'){
+            let solAge = getAge(game.solution[theKey])
             let bereAge= getAge(theValue)
-            if(solAge > bereAge) return 'lower' 
+            if(solAge > bereAge)
+             return 'lower' 
             else if(solAge < bereAge) return 'higher'
             else 'correct'
         }else{
-            if(soluzioa.theKey = theValue) return 'correct'
+            if(game.solution[theKey] == theValue) return 'correct'
             else return 'incorrect'    
         }
         

@@ -1,5 +1,6 @@
 import { folder, leftArrow } from "./fragments.js";
 import { fetchJSON } from "./loaders.js";
+import { setupRows } from "./rows.js";
 
 
 
@@ -66,11 +67,20 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
 
 
       // YOUR CODE HERE
-    let addRow = setupRows( /* THIS NEEDS A PARAMETER */ );
+    let addRow = setupRows(game);
     // get myInput object...
       // when the user types a number an press the Enter key:
-        addRow( /* the ID of the player, where is it? */);
-    //  
+      const input = document.getElementById("myInput");
+      input.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+         const id = input.value.trim();
+         
+         addRow(id)
+        input.value = "";
+    
+  }
+});
+        
 
 
   }
