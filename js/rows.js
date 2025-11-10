@@ -2,6 +2,8 @@
 // .... stringToHTML ....
 // .... setupRows .....
 import { stringToHTML } from "./fragments.js";
+import { higher } from "./fragments.js";
+import { lower } from "./fragments.js";
 export { setupRows };
 
 const delay = 350;
@@ -43,14 +45,20 @@ let setupRows = function (game) {
     
     let check = function (theKey, theValue) {
             // YOUR CODE HERE
-        console.log(theKey)
+        
 
         if(theKey == 'birthdate'){
             let solAge = getAge(game.solution[theKey])
             let bereAge= getAge(theValue)
-            if(solAge > bereAge)
-             return 'lower' 
-            else if(solAge < bereAge) return 'higher'
+            if(solAge > bereAge){
+             return higher
+
+             
+            }
+            else if(solAge < bereAge){
+             return lower
+
+            }
             else 'correct'
         }else{
             if(game.solution[theKey] == theValue) return 'correct'
@@ -60,12 +68,16 @@ let setupRows = function (game) {
     }
 
     function setContent(guess) {
+        let gezi_balio=check("birthdate",guess.birthdate)
         return [
             `<img src="https://playfootball.games/media/nations/${guess.nationality.toLowerCase()}.svg" alt="" style="width: 60%;">`,
             `<img src="https://playfootball.games/media/competitions/${leagueToFlag(guess.leagueId)}.png" alt="" style="width: 60%;">`,
             `<img src="https://cdn.sportmonks.com/images/soccer/teams/${guess.teamId % 32}/${guess.teamId}.png" alt="" style="width: 60%;">`,
             `${guess.position}`,
-            `${getAge(guess.birthdate)}`
+            
+            `${getAge(guess.birthdate) + gezi_balio}` ,
+            
+            /* YOUR CODE HERE */
         ]
     }
 
