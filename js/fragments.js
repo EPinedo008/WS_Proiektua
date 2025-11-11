@@ -3,8 +3,7 @@ export const leftArrow = `<svg xmlns="http://www.w3.org/2000/svg" fill="white" v
 export { stringToHTML };
 export {higher};
 export {lower};
-// YOUR CODE HERE export stringToHTML . Consider to use a single export command instead of one for each const/function
-//
+
 
 const higher = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20
 20" fill="white" aria-hidden="true" width="25" style="margin-right: -8
@@ -19,10 +18,9 @@ const lower = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20
 V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd
 "></path></svg>`
 
-
 const stringToHTML = (str) => {
     var parser = new DOMParser();
     var doc = parser.parseFromString(str, 'text/html');
     return doc.body
     };
-    
+

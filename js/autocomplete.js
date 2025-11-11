@@ -56,7 +56,6 @@ function autocomplete(inp, game) {
                     closeAllLists();
 
                     addRow(this.getElementsByTagName("input")[1].value); // id-a pasatzen du
-                    /* YOUR CODE HERE */
                 });
                 a.appendChild(b);
             }

@@ -72,10 +72,8 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
     document.getElementById("mistery").src = `https://playfootball.games/media/players/${game.solution.id % 32}/${game.solution.id}.png`;
 
 
-      // YOUR CODE HERE
+ 
     let addRow = setupRows(game);
-    // get myInput object...
-      // when the user types a number an press the Enter key:
       const input = document.getElementById("myInput");
       autocomplete(input,game)
       input.addEventListener("keypress", (event) => {
@@ -84,11 +82,8 @@ Promise.all([fetchJSON("fullplayers25"), fetchJSON("solution25")]).then(
          
          addRow(id)
          input.value = "";
-    
-  }
-});
+        }
+      });
         
-
-
   }
 );

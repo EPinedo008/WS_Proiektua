@@ -1,6 +1,6 @@
-// YOUR CODE HERE :  
-// .... stringToHTML ....
-// .... setupRows .....
+
+// .... initState ....
+
 import { stringToHTML } from "./fragments.js";
 import { higher } from "./fragments.js";
 import { lower } from "./fragments.js";
@@ -12,9 +12,9 @@ const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 let setupRows = function (game) {
 
+    let [state, updateState] = initState('WAYgameState', game.solution.id)
 
     function leagueToFlag(leagueId) {
-        // YOUR CODE HERE
         let ligak={
             564:"es1",
             8:"en1",
@@ -27,7 +27,6 @@ let setupRows = function (game) {
 
 
     function getAge(dateString) {
-        // YOUR CODE HERE
         const gaur= new Date();
         let data= dateString.split('-');
         let urtea = gaur.getFullYear() - data[0];
@@ -44,27 +43,20 @@ let setupRows = function (game) {
     }
     
     let check = function (theKey, theValue) {
-            // YOUR CODE HERE
-        
 
         if(theKey == 'birthdate'){
             let solAge = getAge(game.solution[theKey])
             let bereAge= getAge(theValue)
             if(solAge > bereAge){
              return higher
-
-             
             }
             else if(solAge < bereAge){
              return lower
-
             }
-            else 'correct'
-        }else{
-            if(game.solution[theKey] == theValue) return 'correct'
-            else return 'incorrect'    
         }
+        if(game.solution[theKey] != theValue)  return 'incorrect'    
         
+        return 'correct';
     }
 
     function setContent(guess) {
@@ -77,9 +69,9 @@ let setupRows = function (game) {
             
             `${getAge(guess.birthdate) + gezi_balio}` ,
             
-            /* YOUR CODE HERE */
         ]
     }
+
 
     function showContent(content, guess) {
         let fragments = '', s = '';
@@ -104,14 +96,19 @@ let setupRows = function (game) {
         playersNode.prepend(stringToHTML(child))
     }
 
-    let getPlayer = function (playerId) {
-            // YOUR CODE HERE 
-            let emaitza= game.players.filter(j=>{
-                if(j.id==playerId)
-                  return j
-              });
-              return emaitza[0]; //Requires optimization
+     function resetInput(){
+        // YOUR CODE HERE
     }
+
+    let getPlayer = function getPlayer(playerId) {
+        return game.players.find(j => j.id === playerId) || null;
+    }
+
+    function gameEnded(lastGuess){
+        // YOUR CODE HERE
+    }
+
+    resetInput();
 
     return /* addRow */ function (playerId) {
 
@@ -119,6 +116,25 @@ let setupRows = function (game) {
         console.log(guess)
 
         let content = setContent(guess)
+
+        game.guesses.push(playerId)
+        updateState(playerId)
+
+        resetInput();
+
+         if (gameEnded(playerId)) {
+            // updateStats(game.guesses.length);
+
+            if (playerId == game.solution.id) {
+                success();
+            }
+
+            if (game.guesses.length == 8) {
+                gameOver();
+            }
+         }
+
+
         showContent(content, guess)
     }
 }
