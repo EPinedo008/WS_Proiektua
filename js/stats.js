@@ -2,17 +2,25 @@ export {initState}
 
 let initState = function(what, solutionId) { 
 
-    let exists=true;
-    let guesses=[];
-    if(what.getPlayer(solutionId)==null){
-        exists=false;
-    }
-    guesses= function(guess){
-        guess.push(what.getPlayer(solutionId))
-        return guess
+    let gordetakoa = localStorage.getItem(what);
+    let state;
+
+    if (gordetakoa) {
+        state = JSON.parse(gordetakoa);
+    } else {
+        state = {
+            solutionId: solutionId,
+            guesses: []   
+        };
+        localStorage.setItem(what, JSON.stringify(state));
     }
 
-    return [exists, guesses];
+    const addGuess = (guess) => {
+        state.guesses.push(guess);              
+        localStorage.setItem(what, JSON.stringify(state));  
+    };
+
+    return [state, addGuess];
 }
 
 

@@ -1,6 +1,4 @@
-
-// .... initState ....
-
+import { initState } from "./stats.js";
 import { stringToHTML } from "./fragments.js";
 import { higher } from "./fragments.js";
 import { lower } from "./fragments.js";
@@ -13,6 +11,8 @@ const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 let setupRows = function (game) {
 
     let [state, updateState] = initState('WAYgameState', game.solution.id)
+    state.guesses = []; 
+    localStorage.setItem('WAYgameState', JSON.stringify(state));
 
     function leagueToFlag(leagueId) {
         let ligak={
@@ -53,25 +53,44 @@ let setupRows = function (game) {
             else if(solAge < bereAge){
              return lower
             }
+            return 'correct';
         }
         if(game.solution[theKey] != theValue)  return 'incorrect'    
         
         return 'correct';
     }
 
+    function unblur(outcome) {
+        return new Promise( (resolve, reject) =>  {
+            setTimeout(() => {
+                document.getElementById("mistery").classList.remove("hue-rotate-180", "blur")
+                document.getElementById("combobox").remove()
+                let color, text
+                if (outcome=='success'){
+                    color =  "bg-blue-500"
+                    text = "Awesome"
+                } else {
+                    color =  "bg-rose-500"
+                    text = "The player was " + game.solution.name
+                }
+                document.getElementById("picbox").innerHTML += `<div class="animate-pulse fixed z-20 top-14 left-1/2 transform -translate-x-1/2 max-w-sm shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden ${color} text-white"><div class="p-4"><p class="text-sm text-center font-medium">${text}</p></div></div>`
+                resolve();
+            }, "2000")
+        })
+    }
+
     function setContent(guess) {
         let gezi_balio=check("birthdate",guess.birthdate)
+        if(gezi_balio == 'correct') gezi_balio=''
         return [
             `<img src="https://playfootball.games/media/nations/${guess.nationality.toLowerCase()}.svg" alt="" style="width: 60%;">`,
             `<img src="https://playfootball.games/media/competitions/${leagueToFlag(guess.leagueId)}.png" alt="" style="width: 60%;">`,
             `<img src="https://cdn.sportmonks.com/images/soccer/teams/${guess.teamId % 32}/${guess.teamId}.png" alt="" style="width: 60%;">`,
             `${guess.position}`,
-            
             `${getAge(guess.birthdate) + gezi_balio}` ,
             
         ]
     }
-
 
     function showContent(content, guess) {
         let fragments = '', s = '';
@@ -96,23 +115,39 @@ let setupRows = function (game) {
         playersNode.prepend(stringToHTML(child))
     }
 
-     function resetInput(){
-        // YOUR CODE HERE
+    function resetInput(){
+        const myInput = document.getElementById('myInput')
+        myInput.value = "";
+        myInput.placeholder= `Guess ${state.guesses.length} of 8`
     }
 
-    let getPlayer = function getPlayer(playerId) {
-        return game.players.find(j => j.id === playerId) || null;
+    let getPlayer = function (playerId) {
+            let emaitza= game.players.filter(j=>{
+                if(j.id==playerId)
+                  return j
+              });
+              return emaitza[0]; 
     }
 
     function gameEnded(lastGuess){
-        // YOUR CODE HERE
+        if(lastGuess == game.solution.id || state.guesses.length +1 >= 8 ) return true;
+        return false;
+        
     }
 
     resetInput();
 
+    function success(){
+        unblur('success')
+    }
+    function gameOver(){
+        unblur('gameOver')
+    }
+
+
     return /* addRow */ function (playerId) {
 
-        let guess = getPlayer(playerId)
+       let guess = getPlayer(playerId)
         console.log(guess)
 
         let content = setContent(guess)

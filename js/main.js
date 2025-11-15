@@ -6,7 +6,6 @@ import { setupRows } from "./rows.js";
 
 
 function differenceInDays(date1) {
-    // YOUR CODE HERE
     const gaur = new Date();
     
     var diferentzia_milisegunduetan=gaur-date1
