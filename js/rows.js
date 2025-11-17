@@ -1,8 +1,15 @@
 import { initState } from "./stats.js";
+import { updateStats } from "./stats.js"; 
 import { stringToHTML } from "./fragments.js";
 import { higher } from "./fragments.js";
 import { lower } from "./fragments.js";
+import { stats, toggle, headless } from "./fragments.js";
 export { setupRows };
+
+// From: https://stackoverflow.com/a/7254108/243532
+function pad(a, b){
+    return(1e15 + a + '').slice(-b);
+}
 
 const delay = 350;
 const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
@@ -13,7 +20,7 @@ let setupRows = function (game) {
     let [state, updateState] = initState('WAYgameState', game.solution.id)
     state.guesses = []; 
     localStorage.setItem('WAYgameState', JSON.stringify(state));
-
+    
     function leagueToFlag(leagueId) {
         let ligak={
             564:"es1",
@@ -77,6 +84,25 @@ let setupRows = function (game) {
                 resolve();
             }, "2000")
         })
+    }
+
+    function showStats(timeout) {
+        alert('bb')
+        return new Promise( (resolve, reject) =>  {
+            setTimeout(() => {
+                document.body.appendChild(stringToHTML(headless(stats())));
+                document.getElementById("showHide").onclick = toggle;
+                bindClose();
+                resolve();
+            }, timeout)
+        })
+    }
+
+    function bindClose() {
+        document.getElementById("closedialog").onclick = function () {
+            document.body.removeChild(document.body.lastChild)
+            document.getElementById("mistery").classList.remove("hue-rotate-180", "blur")
+        }
     }
 
     function setContent(guess) {
@@ -158,7 +184,7 @@ let setupRows = function (game) {
         resetInput();
 
          if (gameEnded(playerId)) {
-            // updateStats(game.guesses.length);
+            updateStats(game.guesses.length);
 
             if (playerId == game.solution.id) {
                 success();
@@ -167,9 +193,31 @@ let setupRows = function (game) {
             if (game.guesses.length == 8) {
                 gameOver();
             }
+
+            let timeout = calcTimeout();
+
+            showStats(timeout)
+
+            let interval = setInterval(() => {
+                timeout--;
+                document.getElementById("nextPlayer").textContent = formatTime(timeout);
+                if (timeout <= 0) clearInterval(interval);
+            }, 1000);
+
          }
 
 
         showContent(content, guess)
     }
+
+    function calcTimeout() {
+        const gaur = new Date();
+        const bihar = new Date();
+
+        bihar.setHours(24, 0, 0, 0); 
+
+        return Math.floor((bihar - gaur) / 1000); 
+    }
+
+    
 }
