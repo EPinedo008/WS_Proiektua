@@ -41,7 +41,8 @@ let getStats = function(what) {
             bestStreak: 0,
             totalGames: 0,
             gamesSucceded: 0,
-            successRate: 0
+            successRate: 0,
+            tries: 0
             }
         localStorage.setItem(what, JSON.stringify(e));
     }
@@ -49,20 +50,21 @@ let getStats = function(what) {
 };
 
 function successRateCalc(irabazi,jokatu){
-    return (irabazi/jokatu)*100
+    return Math.round((irabazi/jokatu)*100)
 }
+
+let gamestats = getStats('gameStats');
 
 function updateStats(t){
     gamestats.totalGames +=1
+    gamestats.tries = t
     if(t<8){
         
-        gamestats.winDistribution[t-1] +=1
+        gamestats.winDistribution[t] +=1
         gamestats.currentStreak += 1
         if(gamestats.currentStreak>gamestats.bestStreak)
             gamestats.bestStreak = gamestats.currentStreak;
-        gamestats.totalGames +=1
         gamestats.gamesSucceded +=1
-        gamestats.successRate= successRateCalc(gamestats.gamesSucceded,gamestats.totalGames)
     }else{
         gamestats.winDistribution[8] +=1
         gamestats.currentStreak = 0
@@ -75,7 +77,7 @@ function updateStats(t){
 };
 
 
-let gamestats = getStats('gameStats');
+
 
 
 

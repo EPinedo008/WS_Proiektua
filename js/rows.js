@@ -87,7 +87,6 @@ let setupRows = function (game) {
     }
 
     function showStats(timeout) {
-        alert('bb')
         return new Promise( (resolve, reject) =>  {
             setTimeout(() => {
                 document.body.appendChild(stringToHTML(headless(stats())));
@@ -194,23 +193,24 @@ let setupRows = function (game) {
                 gameOver();
             }
 
-            let timeout = calcTimeout();
+            let newFootballerNoiz = calcNewFootballer();
 
-            showStats(timeout)
-
-            let interval = setInterval(() => {
-                timeout--;
-                document.getElementById("nextPlayer").textContent = formatTime(timeout);
-                if (timeout <= 0) clearInterval(interval);
+            showStats(3000).then(() => {   
+                let interval = setInterval(() => {
+                newFootballerNoiz--;
+                alert(document.getElementById("nextPlayer"))
+                document.getElementById("nextPlayer").textContent = formatTime(newFootballerNoiz);
+                if (newFootballerNoiz <= 0) clearInterval(interval);
             }, 1000);
+            });
 
-         }
+        }
 
 
         showContent(content, guess)
     }
 
-    function calcTimeout() {
+    function calcNewFootballer() {
         const gaur = new Date();
         const bihar = new Date();
 
