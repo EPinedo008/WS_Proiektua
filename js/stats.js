@@ -21,9 +21,10 @@ let initState = function(what, solutionId) {
         state.guesses.push(guess);              
         localStorage.setItem(what, JSON.stringify(state));  
     };
-
+    
     return [state, addGuess];
 }
+
 function successRate (e){
     return e.successRate
 }
