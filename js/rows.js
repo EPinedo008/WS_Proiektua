@@ -225,7 +225,6 @@ let setupRows = function (game) {
  
     }
     
-    
     function pad(a, b){
         return(1e15 + a + '').slice(-b);
     }
