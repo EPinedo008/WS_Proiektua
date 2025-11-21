@@ -6,21 +6,19 @@ import { lower } from "./fragments.js";
 import { stats, toggle, headless } from "./fragments.js";
 export { setupRows };
 
-// From: https://stackoverflow.com/a/7254108/243532
-function pad(a, b){
-    return(1e15 + a + '').slice(-b);
-}
+
 
 const delay = 350;
 const attribs = ['nationality', 'leagueId', 'teamId', 'position', 'birthdate']
 
 
 let setupRows = function (game) {
-
+    
     let [state, updateState] = initState('WAYgameState', game.solution.id)
     state.guesses = []; 
     localStorage.setItem('WAYgameState', JSON.stringify(state));
-    
+
+    console.log('consola'+state.guesses);
     function leagueToFlag(leagueId) {
         let ligak={
             564:"es1",
@@ -198,7 +196,6 @@ let setupRows = function (game) {
             showStats(3000).then(() => {   
                 let interval = setInterval(() => {
                 newFootballerNoiz--;
-                alert(document.getElementById("nextPlayer"))
                 document.getElementById("nextPlayer").textContent = formatTime(newFootballerNoiz);
                 if (newFootballerNoiz <= 0) clearInterval(interval);
             }, 1000);
@@ -217,6 +214,20 @@ let setupRows = function (game) {
         bihar.setHours(24, 0, 0, 0); 
 
         return Math.floor((bihar - gaur) / 1000); 
+    }
+
+    function formatTime(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+
+        return `${pad(h, 2)}:${pad(m, 2)}:${pad(s, 2)}`;
+ 
+    }
+    
+    
+    function pad(a, b){
+        return(1e15 + a + '').slice(-b);
     }
 
     
