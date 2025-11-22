@@ -1,6 +1,7 @@
-import {setupRows} from "./rows.js";
+const { setupRows } = require("./rows.js");
+const match = require('autosuggest-highlight/match');
+const parse = require('autosuggest-highlight/parse');
 
-export {autocomplete}
 
 function autocomplete(inp, game) {
 
@@ -32,31 +33,44 @@ function autocomplete(inp, game) {
        
       
         for (i = 0; i < players.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (players[i].name.toLowerCase().startsWith(val.toLowerCase())) {
-                
+            let playerName = players[i].name; 
+            let valLower = val.toLowerCase();
+
+            
+            let words = playerName.split(" ");
+            let matched = words.some(word => word.toLowerCase().startsWith(valLower));
+
+            if (matched) {
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
 
-                /*make the matching letters bold:*/
-                b.innerHTML += `<div class='self-center'>
-                                    <span class='font-bold'>${players[i].name.substr(0, val.length)}</span><span>${players[i].name.substr(val.length)}</span>
-                                    <input type='hidden' name='name' value='${players[i].name}'>
-                                    <input type='hidden' name='id' value='${players[i].id}'>
-                                </div>`;
+                
+                
+                const indices = match(playerName, val); 
+                const parts = parse(playerName, indices);
 
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function (e) {
-                    /*insert the value for the autocomplete text field:*/
-                    inp.value = this.getElementsByTagName("input")[0].value;
-
-                    /*close the list of autocompleted values,
-                    (or any other open lists of autocompleted values:*/
-                    closeAllLists();
-
-                    addRow(this.getElementsByTagName("input")[1].value); // id-a pasatzen du
+                let nameHTML = `<div class='self-center'>`;
+                parts.forEach(part => {
+                    if (part.highlight) {
+                        nameHTML += `<span class='font-bold'>${part.text}</span>`;
+                    } else {
+                        nameHTML += `<span>${part.text}</span>`;
+                    }
                 });
+                nameHTML += `
+                    <input type='hidden' name='name' value='${players[i].name}'>
+                    <input type='hidden' name='id' value='${players[i].id}'>
+                </div>`;
+
+                b.innerHTML += nameHTML;
+
+                b.addEventListener("click", function (e) {
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    closeAllLists();
+                    addRow(this.getElementsByTagName("input")[1].value);
+                });
+
                 a.appendChild(b);
             }
         }
@@ -125,4 +139,6 @@ function autocomplete(inp, game) {
 }
 
 
-
+module.exports = {
+  autocomplete
+};

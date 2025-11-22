@@ -1,10 +1,6 @@
-import { initState } from "./stats.js";
-import { updateStats } from "./stats.js"; 
-import { stringToHTML } from "./fragments.js";
-import { higher } from "./fragments.js";
-import { lower } from "./fragments.js";
-import { stats, toggle, headless } from "./fragments.js";
-export { setupRows };
+const { initState, updateStats } = require("./stats.js");
+const { stringToHTML, higher, lower, stats, toggle, headless } = require("./fragments.js");
+
 
 
 
@@ -231,3 +227,7 @@ let setupRows = function (game) {
 
     
 }
+
+module.exports = {
+    setupRows
+};

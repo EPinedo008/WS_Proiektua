@@ -1,4 +1,4 @@
-export { fetchJSON };
+
 
 async function fetchJSON(what) {
     const response = await fetch("json/"+what+".json");
@@ -7,3 +7,7 @@ async function fetchJSON(what) {
     return data
 
 }
+
+module.exports = {
+    fetchJSON
+};

@@ -1,7 +1,4 @@
-export {initState}
-export {updateStats}
-export { successRate }
-export {getStats}
+
 let initState = function(what, solutionId) { 
 
     let gordetakoa = localStorage.getItem(what);
@@ -82,3 +79,9 @@ function updateStats(t){
 
 
 
+module.exports = {
+    initState,
+    updateStats,
+    successRate,
+    getStats
+};

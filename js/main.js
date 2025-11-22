@@ -1,7 +1,7 @@
-import { autocomplete } from "./autocomplete.js";
-import { folder, leftArrow } from "./fragments.js";
-import { fetchJSON } from "./loaders.js";
-import { setupRows } from "./rows.js";
+const { autocomplete } = require("./autocomplete.js");
+const { folder, leftArrow } = require("./fragments.js");
+const { fetchJSON } = require("./loaders.js");
+const { setupRows } = require("./rows.js")
 
 
 
