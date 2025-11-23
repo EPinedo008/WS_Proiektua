@@ -6,6 +6,16 @@ let initState = function(what, solutionId) {
 
     if (gordetakoa) {
         state = JSON.parse(gordetakoa);
+
+        // Si la solución cambió, resetear intentos
+        if (state.solutionId !== solutionId) {
+            state = {
+                solutionId: solutionId,
+                guesses: []
+            };
+            localStorage.setItem(what, JSON.stringify(state));
+        }
+
     } else {
         state = {
             solutionId: solutionId,

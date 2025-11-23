@@ -13,3 +13,5 @@ fetch('http://api.football-data.org/v4/competitions')
   .catch(errorea => {
         console.error('Errorea gertatu da:', errorea);
   });
+
+  

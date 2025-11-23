@@ -17,34 +17,28 @@ function autocomplete(inp, game) {
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function (e) {
         let a, b, i, val = this.value;
-        /*close any already open lists of autocompleted values*/
         closeAllLists();
-        if (!val) {
-            return false;
-        }
+        if (!val) return false;
         currentFocus = -2;
-        /*create a DIV element that will contain the items (values):*/
+
         a = document.createElement("DIV");
         a.setAttribute("id", this.id + "autocomplete-list");
         a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
         this.parentNode.appendChild(a);
-        /*for each item in the array...*/
-       
+
+        let valLower = val.toLowerCase();
+
         for (i = 0; i < players.length; i++) {
-            let playerName = players[i].name; 
-            let valLower = val.toLowerCase();
+            let playerName = players[i].name.toLowerCase();
 
-            let words = playerName.split(" ");
-            let matched = words.some(word => word.toLowerCase().startsWith(valLower));
-
-            if (matched) {
+            // **Substring check, ez soilik hitzen hasierarekin**
+            if (playerName.includes(valLower)) {
                 b = document.createElement("DIV");
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
 
-                const ind = match(playerName, val); 
-                const parts = parse(playerName, ind);
+                const ind = match(players[i].name, val); 
+                const parts = parse(players[i].name, ind);
 
                 let nameHTML = `<div class='self-center'>`;
                 parts.forEach(part => {
@@ -59,15 +53,18 @@ function autocomplete(inp, game) {
                     <input type='hidden' name='id' value='${players[i].id}'>
                 </div>`;
                 b.innerHTML += nameHTML;
+
                 b.addEventListener("click", function (e) {
                     inp.value = this.getElementsByTagName("input")[0].value;
                     closeAllLists();
                     addRow(this.getElementsByTagName("input")[1].value);
                 });
+
                 a.appendChild(b);
             }
         }
     });
+
 
     inp.addEventListener("keydown", function (e) {
         let x = document.getElementById(this.id + "autocomplete-list");
