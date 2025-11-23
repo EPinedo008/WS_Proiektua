@@ -31,12 +31,10 @@ function autocomplete(inp, game) {
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
        
-      
         for (i = 0; i < players.length; i++) {
             let playerName = players[i].name; 
             let valLower = val.toLowerCase();
 
-            
             let words = playerName.split(" ");
             let matched = words.some(word => word.toLowerCase().startsWith(valLower));
 
@@ -45,10 +43,8 @@ function autocomplete(inp, game) {
                 b.classList.add('flex', 'items-start', 'gap-x-3', 'leading-tight', 'uppercase', 'text-sm');
                 b.innerHTML = `<img src="https://cdn.sportmonks.com/images/soccer/teams/${players[i].teamId % 32}/${players[i].teamId}.png"  width="28" height="28">`;
 
-                
-                
-                const indices = match(playerName, val); 
-                const parts = parse(playerName, indices);
+                const ind = match(playerName, val); 
+                const parts = parse(playerName, ind);
 
                 let nameHTML = `<div class='self-center'>`;
                 parts.forEach(part => {
@@ -62,15 +58,12 @@ function autocomplete(inp, game) {
                     <input type='hidden' name='name' value='${players[i].name}'>
                     <input type='hidden' name='id' value='${players[i].id}'>
                 </div>`;
-
                 b.innerHTML += nameHTML;
-
                 b.addEventListener("click", function (e) {
                     inp.value = this.getElementsByTagName("input")[0].value;
                     closeAllLists();
                     addRow(this.getElementsByTagName("input")[1].value);
                 });
-
                 a.appendChild(b);
             }
         }
