@@ -17,3 +17,23 @@ fetch('http://api.football-data.org/v4/competitions')
   .catch(errorea => {
         console.error('Errorea gertatu da:', errorea);
   });
+
+  fetch('http://api.football-data.org/v4/competitions')
+  .then(erantzuna => erantzuna.json())
+  .then(datuak => {
+
+        const liga2014 = datuak.competitions.filter(obj => obj.id === 2014);
+
+        
+        if (liga2014.length > 0) {
+            const liga = liga2014[0];
+            console.log(`ID: ${liga.id}`);
+            console.log(`Izena): ${liga.name}`);
+            console.log(`Herrialdea: ${liga.area.name}`);
+        }
+  })
+  .catch(errorea => {
+        console.error('Errorea gertatu da:', errorea);
+  });
+
+  
