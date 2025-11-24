@@ -489,7 +489,7 @@ let setupRows = function (game) {
         if (!myInput) return;
         myInput.value = "";
         
-        myInput.placeholder = `Guess ${state.guesses.length + 1} of 8`;
+        myInput.placeholder = `Guess ${state.guesses.length +1} of 8`;
     }
 
     let getPlayer = function (playerId) {
@@ -512,18 +512,44 @@ let setupRows = function (game) {
 
     
     if (state.solutionId === game.solution.id && state.guesses.length > 0) {
-
-        state.guesses.forEach(gid => {
-            let guess = getPlayer(gid);
-            if (!guess) return; 
-            let content = setContent(guess);
-            showContent(content, guess);
-            displayed.add(gid);
-        });
-
-    }
-
+    
+    const playersNode = document.getElementById('players');
+    if (playersNode) playersNode.innerHTML = "";
    
+    state.guesses.forEach(gid => {
+        let guess = getPlayer(gid);
+        if (!guess) return;
+        let content = setContent(guess);
+        showContent(content, guess);
+        displayed.add(gid);
+       
+    });
+    resetInput();
+    emaitza(state.guesses[state.guesses.length - 1]);
+
+}
+function emaitza(playerId) {
+    if (gameEnded(playerId)) {
+                updateStats(state.guesses.length);
+
+                if (playerId == game.solution.id) {
+                    success();
+                } else if (state.guesses.length >= 8) {
+                    gameOver();
+                }
+
+                let newFootballerNoiz = calcNewFootballer();
+
+                showStats(3000).then(() => {
+                    let interval = setInterval(() => {
+                        newFootballerNoiz--;
+                        const nextPlayerEl = document.getElementById("nextPlayer");
+                        if (nextPlayerEl) nextPlayerEl.textContent = formatTime(newFootballerNoiz);
+                        if (newFootballerNoiz <= 0) clearInterval(interval);
+                    }, 1000);
+                });
+            }
+    }
     return /* addRow */ function (playerId) {
 
         
@@ -553,26 +579,7 @@ let setupRows = function (game) {
         resetInput();
 
         
-        if (gameEnded(playerId)) {
-            updateStats(state.guesses.length);
-
-            if (playerId == game.solution.id) {
-                success();
-            } else if (state.guesses.length >= 8) {
-                gameOver();
-            }
-
-            let newFootballerNoiz = calcNewFootballer();
-
-            showStats(3000).then(() => {
-                let interval = setInterval(() => {
-                    newFootballerNoiz--;
-                    const nextPlayerEl = document.getElementById("nextPlayer");
-                    if (nextPlayerEl) nextPlayerEl.textContent = formatTime(newFootballerNoiz);
-                    if (newFootballerNoiz <= 0) clearInterval(interval);
-                }, 1000);
-            });
-        }
+        emaitza(playerId);
 
     } 
 
@@ -612,7 +619,7 @@ let initState = function(what, solutionId) {
     if (gordetakoa) {
         state = JSON.parse(gordetakoa);
 
-        // Si la solución cambió, resetear intentos
+        
         if (state.solutionId !== solutionId) {
             state = {
                 solutionId: solutionId,
